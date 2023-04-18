@@ -1,0 +1,20 @@
+# test files
+test/
+logs/
+temp/
+parameters.png
+
+# output files
+result/
+*.bat
+*.c
+*.exe
+*.o
+*.libs
+*.log
+*.makefile
+*.h
+*.json
+*.xml
+*.csv
+*.out

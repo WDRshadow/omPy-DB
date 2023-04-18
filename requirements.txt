@@ -1,0 +1,2 @@
+OMPython~=3.4.0
+openmdao~=3.25.0
