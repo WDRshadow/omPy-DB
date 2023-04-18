@@ -7,7 +7,7 @@ from module.fileAPI import FileAPI, Builder
 from openModelica.DriverBehaviourOM import OMModel
 
 
-class FWOptimise(om.ExternalCodeComp):
+class OMOptimise(om.ExternalCodeComp):
     def __init__(self, counter: Builder, **kwargs):
         super().__init__(**kwargs)
         # Specifying pre-existing input & output files

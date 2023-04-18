@@ -1,7 +1,7 @@
 import openmdao.api as om
 
 import config
-from openMDAO.DBoptimiser import FWOptimise
+from openMDAO.DBoptimiser import OMOptimise
 from module.fileAPI import FileAPI
 from module.logger import logger
 
@@ -26,7 +26,7 @@ def run_optimization():
     model = prob.model
 
     # register the subsystem
-    prob.model.add_subsystem('om_db', FWOptimise(counter))
+    prob.model.add_subsystem('om_db', OMOptimise(counter))
 
     # Adding the design variables
     model.add_design_var('om_db.g_p', lower=2.5, upper=5)
