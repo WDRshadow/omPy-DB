@@ -30,7 +30,7 @@ class FWOptimise(om.ExternalCodeComp):
         self.add_output('heading_diff', val=0.0)
 
         # This calls an external python script containing the Python-FAST interface
-        self.options['command'] = 'py run.py run'
+        self.options['command'] = 'python run.py om'
 
     def compute(self, inputs, outputs):
         # Get from config file because the parameters do not change in the optimization
@@ -59,7 +59,8 @@ class FWOptimise(om.ExternalCodeComp):
 
         # run simulation
         logger.info(f'\n----------------------------------------------------------------- \n'
-                    f'Running simulation with variable {g_p} {g_c} {T_L} {T_l} {t_a} {T_N} {K_r} {K_t}.')
+                    f'Running simulation with variable {g_p} {g_c} {T_L} {T_l} {t_a} {T_N} {K_r} {K_t}. \n'
+                    f'-----------------------------------------------------------------')
         try:
             super().compute(inputs, outputs)
         except Exception as err:
@@ -75,6 +76,7 @@ class FWOptimise(om.ExternalCodeComp):
 
         self.counter.writeLine(f'{g_p} {g_c} {T_L} {T_l} {t_a} {T_N} {K_r} {K_t} {output_diff}')
 
-        logger.info(f'The simulation results are shown below:'
-                    f'Average heading angle difference: {output_diff}'
+        logger.info(f'\n----------------------------------------------------------------- \n'
+                    f'The simulation results are shown below: \n'
+                    f'Average heading angle difference: {output_diff} \n'
                     f'-----------------------------------------------------------------')

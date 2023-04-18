@@ -29,14 +29,14 @@ def run_optimization():
     prob.model.add_subsystem('om_db', FWOptimise(counter))
 
     # Adding the design variables
-    model.add_design_var('om_db.g_p', upper=2.5, lower=5)
-    model.add_design_var('om_db.g_c', upper=0, lower=20)
-    model.add_design_var('om_db.T_L', upper=1, lower=5)
-    model.add_design_var('om_db.T_l', upper=0.5, lower=1.5)
-    model.add_design_var('om_db.t_a', upper=0.02, lower=0.05)
-    model.add_design_var('om_db.T_N', upper=0.05, lower=0.15)
-    model.add_design_var('om_db.K_r', upper=0.1, lower=0.5)
-    model.add_design_var('om_db.K_t', upper=0.3, lower=0.7)
+    model.add_design_var('om_db.g_p', lower=2.5, upper=5)
+    model.add_design_var('om_db.g_c', lower=0, upper=20)
+    model.add_design_var('om_db.T_L', lower=1, upper=5)
+    model.add_design_var('om_db.T_l', lower=0.05, upper=0.15)
+    model.add_design_var('om_db.t_a', lower=0.02, upper=0.05)
+    model.add_design_var('om_db.T_N', lower=0.05, upper=0.15)
+    model.add_design_var('om_db.K_r', lower=0.1, upper=0.5)
+    model.add_design_var('om_db.K_t', lower=0.3, upper=0.7)
 
     # Adding the objective functions
     model.add_objective('om_db.heading_diff')

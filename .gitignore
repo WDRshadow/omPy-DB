@@ -4,7 +4,7 @@ logs/
 temp/
 
 # output files
-result/
+reports/
 *.bat
 *.c
 *.exe

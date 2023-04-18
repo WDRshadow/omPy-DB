@@ -20,9 +20,8 @@ class OMModel:
         self.outputVariable = config.outputVariable
         self.outputFileName = config.outputFileName
         # load and initialize the instance
-        self.logger.info('loadModel(Modelica):{}'.format(self.omc.sendExpression('loadModel(Modelica)')))
-        self.logger.info('loadFile(\"{}\"):{}'
-                         .format(self.packagePath, self.omc.sendExpression(f'loadFile(\"{self.packagePath}\")')))
+        self.omc.sendExpression('loadModel(Modelica)')
+        self.omc.sendExpression(f'loadFile(\"{self.packagePath}\")')
 
     def update(self, updateData: dict):
         """
@@ -59,12 +58,11 @@ class OMModel:
             f'outputFormat="csv", '
             f'variableFilter=\"{self.outputVariable}\", '
             f'fileNamePrefix=\"{self.outputFileName}\"'
-            f')',
-            f'plot({self.outputVariable})'
+            f')'
         ]
         for cmd in cmds:
             answer = self.omc.sendExpression(cmd)
-            self.logger.info("{}:{}".format(cmd, answer))
+            # self.logger.info("{}:{}".format(cmd, answer))
         self.logger.info(f'Run completed. The output files have been saved in folder {config.tempPath}.')
         return self
 
@@ -74,24 +72,24 @@ class OMModel:
         Get the initial input data from config file or temp folder. \n
         :return: a dict that recording the simulation input data.
         """
-        parameters = config.inputParameters
         outputFile = FileAPI(config.tempPath, 'DB_parameters.dat')
         if outputFile.isExist():
             inputData = outputFile.reader() \
                 .read(1, 2).read(2, 2).read(3, 2).read(4, 2) \
                 .read(5, 2).read(6, 2).read(7, 2).read(8, 2) \
                 .result()
-            parameters['g_p'] = inputData[0]
-            parameters['g_c'] = inputData[1]
-            parameters['T_L'] = inputData[2]
-            parameters['T_l'] = inputData[3]
-            parameters['t_a'] = inputData[4]
-            parameters['T_N'] = inputData[5]
-            parameters['K_r'] = inputData[6]
-            parameters['K_t'] = inputData[7]
-            return inputData
+            return {
+                'g_p': inputData[0],
+                'g_c': inputData[1],
+                'T_L': inputData[2],
+                'T_l': inputData[3],
+                't_a': inputData[4],
+                'T_N': inputData[5],
+                'K_r': inputData[6],
+                'K_t': inputData[7],
+            }
         else:
-            return parameters
+            return config.inputParameters
 
     @classmethod
     def read_output(cls) -> dict:
