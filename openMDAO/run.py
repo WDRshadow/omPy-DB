@@ -3,12 +3,12 @@ import openmdao.api as om
 import config
 from openMDAO.FWoptimiser import FWOptimise
 from module.fileAPI import FileAPI
-from module import logger
+from module.logger import logger
 
 
 def run_optimization():
     # initialize the logger and output file Builder.
-    log = logger.logger
+    log = logger
 
     counter = FileAPI(config.tempPath, 'optimization.out').builder()
     counter.writeLine('draft column23_mass PtfmSway PtfmSurge PtfmHeave PtfmRoll PtfmPitch PtfmYaw')

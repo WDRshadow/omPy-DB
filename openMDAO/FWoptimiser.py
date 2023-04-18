@@ -9,7 +9,7 @@ import openmdao.api as om
 import config
 from module.logger import logger
 from module.fileAPI import FileAPI, Builder
-from openModelica.DriverBehaviourOM import Model
+from openModelica.DriverBehaviourOM import OMModel
 
 
 class FWOptimise(om.ExternalCodeComp):
@@ -95,7 +95,7 @@ class FWOptimise(om.ExternalCodeComp):
             logger.error(err)
             exit()
 
-        output_data = Model.read_output()
+        output_data = OMModel.read_output()
         # output_data = Main(Main.read_input()).run().read_output()
 
         # raed and save the simulation output data, each variable will be a list.

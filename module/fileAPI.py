@@ -1,7 +1,7 @@
 import os
 import shutil
 
-import logger
+from module.logger import logger
 
 
 class FileAPI:
@@ -12,7 +12,7 @@ class FileAPI:
         :param path: The relative path of the modified file.
         :param name: The file name.
         """
-        self.logger = logger.logger
+        self.logger = logger
         self.path = path
         self.name = name
 
@@ -169,10 +169,30 @@ class Reader:
         val = self.lines[line - 1].split()[val_l - 1]
         try:
             val = float(val)
-        except Exception as ign:
-            self.file.logger.warning(ign)
+        except Exception as war:
+            self.file.logger.warning(war)
         self.value.append(val)
         return self
+
+    def read_csv(self, skipLine: int, row: int) -> list:
+        """
+        A function to read the specific row in this csv file.
+        :param skipLine: The number of skip heading line.
+        :param row: The number of specific row.
+        :return: A list recording the data in the row.
+        """
+        theList = []
+        try:
+            for line in self.lines[skipLine:]:
+                val = line.split(",")[row - 1]
+                try:
+                    val = float(val)
+                except Exception as war:
+                    self.file.logger.warning(war)
+                theList.append(val)
+            return theList
+        except Exception as err:
+            self.file.logger.error(err)
 
     def result(self):
         """
