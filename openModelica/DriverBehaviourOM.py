@@ -20,8 +20,8 @@ class OMModel:
         self.outputVariable = config.outputVariable
         self.outputFileName = config.outputFileName
         # load and initialize the instance
-        self.logger.info('loadModel(Modelica):\n{}'.format(self.omc.sendExpression('loadModel(Modelica)')))
-        self.logger.info('loadFile(\"{}\"):\n{}'
+        self.logger.info('loadModel(Modelica):{}'.format(self.omc.sendExpression('loadModel(Modelica)')))
+        self.logger.info('loadFile(\"{}\"):{}'
                          .format(self.packagePath, self.omc.sendExpression(f'loadFile(\"{self.packagePath}\")')))
 
     def update(self, updateData: dict):
@@ -30,6 +30,7 @@ class OMModel:
         :param updateData: a dict that recording the updating data.
         :return: the self Model object.
         """
+        self.logger.info('Updating openModelica files.')
         FileAPI(os.path.join(config.openModelicaPath, 'DriverBehaviourModel', 'Examples'),
                 'DriverVehiclePath.mo').changer() \
             .change(37, 3, updateData['K_r']) \
@@ -48,6 +49,7 @@ class OMModel:
         This is the main function to run the openModelica. \n
         :return: the self Model object.
         """
+        self.logger.info('Running openModelica.')
         cmds = [
             f'cd(\"{config.tempPath}\")',
             f'simulate('
@@ -62,8 +64,8 @@ class OMModel:
         ]
         for cmd in cmds:
             answer = self.omc.sendExpression(cmd)
-            self.logger.info("{}:\n{}".format(cmd, answer))
-        self.logger.info(f'The output files have been saved in folder {config.tempPath}.')
+            self.logger.info("{}:{}".format(cmd, answer))
+        self.logger.info(f'Run completed. The output files have been saved in folder {config.tempPath}.')
         return self
 
     @classmethod
@@ -73,7 +75,7 @@ class OMModel:
         :return: a dict that recording the simulation input data.
         """
         parameters = config.inputParameters
-        outputFile = FileAPI(config.tempPath, 'DB_parameters.out')
+        outputFile = FileAPI(config.tempPath, 'DB_parameters.dat')
         if outputFile.isExist():
             inputData = outputFile.reader() \
                 .read(1, 2).read(2, 2).read(3, 2).read(4, 2) \

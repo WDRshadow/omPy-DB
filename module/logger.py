@@ -9,7 +9,7 @@ if config.log is True:
     logger.setLevel(logging.INFO)
     consoleHandler = logging.StreamHandler()
     consoleHandler.setLevel(logging.INFO)
-    fileHandler = logging.FileHandler('logs/wow.log', mode='a', encoding='UTF-8')
+    fileHandler = logging.FileHandler('logs/omPy-DB.log', mode='a', encoding='UTF-8')
     fileHandler.setLevel(logging.NOTSET)
     formatter = logging.Formatter('[%(name)s] [%(asctime)s] [%(levelname)s]: %(message)s')
     consoleHandler.setFormatter(formatter)

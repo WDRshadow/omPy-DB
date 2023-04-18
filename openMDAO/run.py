@@ -1,7 +1,7 @@
 import openmdao.api as om
 
 import config
-from openMDAO.FWoptimiser import FWOptimise
+from openMDAO.DBoptimiser import FWOptimise
 from module.fileAPI import FileAPI
 from module.logger import logger
 
@@ -11,12 +11,14 @@ def run_optimization():
     log = logger
 
     counter = FileAPI(config.tempPath, 'optimization.out').builder()
-    counter.writeLine('draft column23_mass PtfmSway PtfmSurge PtfmHeave PtfmRoll PtfmPitch PtfmYaw')
+    counter\
+        .writeLine('parameters                      output_data')\
+        .writeLine('g_p g_c T_L T_l t_a T_N K_r K_t heading_angle_difference')
 
     # check and delete the input.dat file.
-    f = FileAPI(config.tempPath, 'input.dat')
+    f = FileAPI(config.tempPath, 'DB_parameters.dat')
     if f.isExist():
-        f.logger.info('Removing the old input.dat file.')
+        f.logger.info('Removing the old DB_parameters.dat file.')
         f.remove()
 
     # initialize the model
@@ -24,19 +26,20 @@ def run_optimization():
     model = prob.model
 
     # register the subsystem
-    prob.model.add_subsystem('semi_sub', FWOptimise(counter))
+    prob.model.add_subsystem('om_db', FWOptimise(counter))
 
     # Adding the design variables
-    model.add_design_var('semi_sub.column1_mass', upper=4.5, lower=2.5)
-    model.add_design_var('semi_sub.draft', upper=0.4, lower=0.2)  # the limitation should be corrected
+    model.add_design_var('om_db.g_p', upper=2.5, lower=5)
+    model.add_design_var('om_db.g_c', upper=0, lower=20)
+    model.add_design_var('om_db.T_L', upper=1, lower=5)
+    model.add_design_var('om_db.T_l', upper=0.5, lower=1.5)
+    model.add_design_var('om_db.t_a', upper=0.02, lower=0.05)
+    model.add_design_var('om_db.T_N', upper=0.05, lower=0.15)
+    model.add_design_var('om_db.K_r', upper=0.1, lower=0.5)
+    model.add_design_var('om_db.K_t', upper=0.3, lower=0.7)
 
     # Adding the objective functions
-    model.add_objective('semi_sub.B1Sway')
-    model.add_objective('semi_sub.B1Surge')
-    model.add_objective('semi_sub.B1Heave')
-    model.add_objective('semi_sub.B1Roll')
-    model.add_objective('semi_sub.B1Pitch')
-    model.add_objective('semi_sub.B1Yaw')
+    model.add_objective('om_db.heading_diff')
 
     # Setting the optimisation algorithm to use, in this case a differential evolutionary algorithm
     prob.driver = om.DifferentialEvolutionDriver()
@@ -50,16 +53,4 @@ def run_optimization():
 
     # Returning variable outputs at the point optimiser completes and save in an output file
     counter.write()
-
-    column1_mass = prob.get_val('semi_sub.column1_mass')
-    draft = prob.get_val('semi_sub.draft')
-
-    log.info('The results are shown below.')
-    log.info(f'column1_mass {column1_mass}')
-    log.info(f'draft {draft}')
-
-    FileAPI(config.tempPath, 'optimization_result.dat').builder() \
-        .writeLine(f'draft {draft}') \
-        .writeLine(f'column1_mass {column1_mass}') \
-        .write() \
-        .logger.info(f'The optimization result has been saved in the file optimization_result.dat in temp folder.')
+    log.info('Run optimization success.')

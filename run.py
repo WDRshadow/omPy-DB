@@ -36,7 +36,7 @@ elif str(sys.argv[1]) == "om":
     from openModelica.DriverBehaviourOM import OMModel
 
     try:
-        OMModel().run()
+        OMModel().update(OMModel.read_output()).run()
     except Exception as err:
         logger.error(err)
 

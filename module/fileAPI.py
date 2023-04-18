@@ -176,7 +176,7 @@ class Reader:
 
     def read_csv(self, skipLine: int, row: int) -> list:
         """
-        A function to read the specific row in this csv file.
+        A function to read the specific row in this csv file. \n
         :param skipLine: The number of skip heading line.
         :param row: The number of specific row.
         :return: A list recording the data in the row.

@@ -2,7 +2,6 @@
 test/
 logs/
 temp/
-parameters.png
 
 # output files
 result/
