@@ -2,6 +2,7 @@
 test/
 logs/
 temp/
+result/
 
 # output files
 reports/

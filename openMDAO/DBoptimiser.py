@@ -1,5 +1,4 @@
 import openmdao.api as om
-from numpy import mean
 
 import config
 from module.logger import logger
@@ -27,7 +26,8 @@ class OMOptimise(om.ExternalCodeComp):
         self.add_input('K_t', val=config.inputParameters['K_t'])
 
         # add outputs here
-        self.add_output('heading_diff', val=0.0)
+        self.add_output('heading_diff_mean', val=0.0)
+        self.add_output('heading_diff_max', val=0.0)
 
         # This calls an external python script containing the Python-FAST interface
         self.options['command'] = 'python run.py om'
@@ -36,14 +36,14 @@ class OMOptimise(om.ExternalCodeComp):
         # Get from config file because the parameters do not change in the optimization
         ...
         # Get from input variables
-        g_p = inputs['g_p'][0]
-        g_c = inputs['g_c'][0]
-        T_L = inputs['T_L'][0]
-        T_l = inputs['T_l'][0]
-        t_a = inputs['t_a'][0]
-        T_N = inputs['T_N'][0]
-        K_r = inputs['K_r'][0]
-        K_t = inputs['K_t'][0]
+        g_p = round(inputs['g_p'][0], 3)
+        g_c = round(inputs['g_c'][0], 3)
+        T_L = round(inputs['T_L'][0], 3)
+        T_l = round(inputs['T_l'][0], 3)
+        t_a = round(inputs['t_a'][0], 3)
+        T_N = round(inputs['T_N'][0], 3)
+        K_r = round(inputs['K_r'][0], 3)
+        K_t = round(inputs['K_t'][0], 3)
 
         # save the input data into a file
         FileAPI(config.tempPath, self.input_file).builder() \
@@ -69,14 +69,16 @@ class OMOptimise(om.ExternalCodeComp):
             exit()
 
         # raed and save the simulation output data, each variable will be a list.
-        output_diff = mean(OMModel.read_output()['heading_angle_difference'])
-        outputs['heading_diff'] = output_diff
+        output_diff_max, output_diff_mean = OMModel.read_output()
+        outputs['heading_diff_mean'] = output_diff_mean
+        outputs['heading_diff_max'] = output_diff_max
 
         # record the data in this simulation
 
-        self.counter.writeLine(f'{g_p} {g_c} {T_L} {T_l} {t_a} {T_N} {K_r} {K_t} {output_diff}')
+        self.counter.writeLine(f'{g_p},{g_c},{T_L},{T_l},{t_a},{T_N},{K_r},{K_t},{output_diff_mean},{output_diff_max}')
 
         logger.info(f'\n----------------------------------------------------------------- \n'
                     f'The simulation results are shown below: \n'
-                    f'Average heading angle difference: {output_diff} \n'
+                    f'Max heading angle difference: {output_diff_max} \n'
+                    f'Average heading angle difference: {output_diff_mean} \n'
                     f'-----------------------------------------------------------------')

@@ -1,5 +1,6 @@
 import os
 from OMPython import OMCSessionZMQ
+from numpy import mean
 
 import config
 from module.fileAPI import FileAPI
@@ -58,7 +59,9 @@ class OMModel:
             f'outputFormat="csv", '
             f'variableFilter=\"{self.outputVariable}\", '
             f'fileNamePrefix=\"{self.outputFileName}\"'
-            f')'
+            f')',
+            # f'plot({self.outputVariable})',
+            f'exit()'
         ]
         for cmd in cmds:
             answer = self.omc.sendExpression(cmd)
@@ -78,6 +81,7 @@ class OMModel:
                 .read(1, 2).read(2, 2).read(3, 2).read(4, 2) \
                 .read(5, 2).read(6, 2).read(7, 2).read(8, 2) \
                 .result()
+            inputData = list(map(float, inputData))
             return {
                 'g_p': inputData[0],
                 'g_c': inputData[1],
@@ -92,13 +96,16 @@ class OMModel:
             return config.inputParameters
 
     @classmethod
-    def read_output(cls) -> dict:
+    def read_output(cls):
         """
         Get the output data. \n
-        :return: a dict that recording the simulation output data.
+        :return: the max of the data, and the average of the data.
         """
         file_reader = FileAPI(config.tempPath, f'{config.outputFileName}_res.csv').reader()
-        return {
+        output_data = {
             'time': file_reader.read_csv(1, 1),
             'heading_angle_difference': file_reader.read_csv(1, 2)
         }
+        ma = round(max(output_data['heading_angle_difference']), 3)
+        av = mean(output_data['heading_angle_difference']).round(3)
+        return ma, av
