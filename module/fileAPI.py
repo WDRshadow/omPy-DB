@@ -129,7 +129,7 @@ class Changer:
         """
         aLine = self.lines[line - 1].split()
         aLine[val_l - 1] = str(value)
-        self.lines[line - 1] = ' '.join(aLine)
+        self.lines[line - 1] = ' '.join(aLine).replace('\n', '') + '\n'
         return self
 
     def do(self):
