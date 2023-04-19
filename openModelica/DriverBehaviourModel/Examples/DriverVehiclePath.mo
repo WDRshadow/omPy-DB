@@ -34,7 +34,7 @@ model DriverVehiclePath
     Placement(visible = true, transformation(origin = {-20, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-10, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Math.Add add(k2 = -1)  annotation(
     Placement(visible = true, transformation(origin = {-20, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  DriverBehaviourModel.ComtrolledObjects.Parameters parameters(K_r= 0.278 ,K_t= 0.589 ,T_L= 3 ,T_N= 0.1 ,T_l= 0.1 ,g_c= 0 ,g_p= 5 ,t_a= 0.03 )  annotation(
+  DriverBehaviourModel.ComtrolledObjects.Parameters parameters(K_r= 0.389 ,K_t= 0.367 ,T_L= 3 ,T_N= 0.1 ,T_l= 1 ,g_c= 1.111 ,g_p= 3.472 ,t_a= 0.03 )  annotation(
     Placement(visible = true, transformation(origin = {-170, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Interfaces.AngleRealOutput desired_angle annotation(
     Placement(visible = true, transformation(origin = {20, 130}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));

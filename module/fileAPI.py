@@ -127,7 +127,9 @@ class Changer:
         :param value: Modified values (new).
         :return: Changer object.
         """
-        self.lines[line - 1] = self.lines[line - 1].replace(self.lines[line - 1].split()[val_l - 1], str(value))
+        aLine = self.lines[line - 1].split()
+        aLine[val_l - 1] = str(value)
+        self.lines[line - 1] = ' '.join(aLine)
         return self
 
     def do(self):

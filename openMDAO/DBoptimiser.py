@@ -18,10 +18,10 @@ class OMOptimise(om.ExternalCodeComp):
         # add inputs here
         self.add_input('g_p', val=config.inputParameters['g_p'])
         self.add_input('g_c', val=config.inputParameters['g_c'])
-        self.add_input('T_L', val=config.inputParameters['T_L'])
-        self.add_input('T_l', val=config.inputParameters['T_l'])
-        self.add_input('t_a', val=config.inputParameters['t_a'])
-        self.add_input('T_N', val=config.inputParameters['T_N'])
+        # self.add_input('T_L', val=config.inputParameters['T_L'])
+        # self.add_input('T_l', val=config.inputParameters['T_l'])
+        # self.add_input('t_a', val=config.inputParameters['t_a'])
+        # self.add_input('T_N', val=config.inputParameters['T_N'])
         self.add_input('K_r', val=config.inputParameters['K_r'])
         self.add_input('K_t', val=config.inputParameters['K_t'])
 

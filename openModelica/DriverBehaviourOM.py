@@ -1,5 +1,5 @@
 import os
-from OMPython import OMCSessionZMQ
+from OMPython import OMCSessionZMQ, ModelicaSystem
 from numpy import mean
 
 import config
@@ -13,23 +13,28 @@ class OMModel:
         This is the Model class for running the openModelica simulation process. \n
         """
         self.logger = logger
-        self.omc = OMCSessionZMQ()
+        self.path = config.openModelicaPath
         self.packagePath = config.packagePath
         self.model = config.model
         self.startTime = config.startTime
         self.stopTime = config.stopTime
         self.outputVariable = config.outputVariable
         self.outputFileName = config.outputFileName
+        # initiate the instance of openModelica
+        self.omc = OMCSessionZMQ()
+        # self.mod = ModelicaSystem(self.packagePath, self.model, variableFilter=self.outputVariable)
 
     def update(self, updateData: dict):
         """
-        Update the input files of openModelica from the parameter.\n
+        Update the input files of openModelica from the updateData parameter.\n
         :param updateData: a dict that recording the updating data.
         :return: the self Model object.
         """
-        self.logger.info('Updating openModelica files.')
-        FileAPI(os.path.join(config.openModelicaPath, 'DriverBehaviourModel', 'Examples'),
-                'DriverVehiclePath.mo').changer() \
+        self.logger.info('Updating model parameters.')
+        modelName = self.model.split('.')
+        modelFile = modelName.pop() + '.mo'
+        modelPath = os.path.join(self.path, '\\'.join(modelName))
+        FileAPI(modelPath, modelFile).changer() \
             .change(37, 3, updateData['K_r']) \
             .change(37, 5, updateData['K_t']) \
             .change(37, 7, updateData['T_L']) \
@@ -39,6 +44,15 @@ class OMModel:
             .change(37, 15, updateData['g_p']) \
             .change(37, 17, updateData['t_a']) \
             .do()
+        # self.mod.setParameters(['parameters.g_p={}'.format(updateData['g_p']),
+        #                         'parameters.g_c={}'.format(updateData['g_c']),
+        #                         'parameters.T_L={}'.format(updateData['T_L']),
+        #                         'parameters.T_l={}'.format(updateData['T_l']),
+        #                         'parameters.t_a={}'.format(updateData['t_a']),
+        #                         'parameters.T_N={}'.format(updateData['T_N']),
+        #                         'parameters.K_r={}'.format(updateData['K_r']),
+        #                         'parameters.K_t={}'.format(updateData['K_t'])])
+        # self.mod.buildModel()
         return self
 
     def run(self):
@@ -48,7 +62,6 @@ class OMModel:
         """
         self.logger.info('Running openModelica.')
         cmds = [
-            f'loadModel(Modelica)',
             f'loadFile(\"{self.packagePath}\")',
             f'cd(\"{config.tempPath}\")',
             f'simulate('
@@ -65,6 +78,11 @@ class OMModel:
         for cmd in cmds:
             answer = self.omc.sendExpression(cmd)
             # self.logger.info("{}:{}".format(cmd, answer))
+        # self.mod.setSimulationOptions([f'startTime={self.startTime}', f'stopTime={self.stopTime}',
+        #                                'outputFormat=\"csv\"', f'variableFilter=\"{self.outputVariable}\"',
+        #                                f'fileNamePrefix=\"{self.outputFileName}\"'])
+        # self.mod.buildModel()
+        # self.mod.simulate(f'{self.outputFileName}_res.csv')
         self.logger.info(f'Run completed. The output files have been saved in folder {config.tempPath}.')
         return self
 

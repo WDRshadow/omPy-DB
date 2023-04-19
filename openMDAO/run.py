@@ -50,7 +50,8 @@ def run_optimization():
     # Returning variable outputs at the point optimiser completes and save in an output file
     counter.write()
 
-    f = FileAPI(config.tempPath, 'DB_parameters.dat').logger.info('Run optimization success.')
+    f = FileAPI(config.tempPath, 'DB_parameters.dat')
+    f.logger.info('Run optimization success.')
     if f.isExist():
         f.logger.info('Removing the old DB_parameters.dat file.')
         f.remove()
