@@ -20,9 +20,6 @@ class OMModel:
         self.stopTime = config.stopTime
         self.outputVariable = config.outputVariable
         self.outputFileName = config.outputFileName
-        # load and initialize the instance
-        self.omc.sendExpression('loadModel(Modelica)')
-        self.omc.sendExpression(f'loadFile(\"{self.packagePath}\")')
 
     def update(self, updateData: dict):
         """
@@ -51,6 +48,8 @@ class OMModel:
         """
         self.logger.info('Running openModelica.')
         cmds = [
+            f'loadModel(Modelica)',
+            f'loadFile(\"{self.packagePath}\")',
             f'cd(\"{config.tempPath}\")',
             f'simulate('
             f'{self.model}, '
