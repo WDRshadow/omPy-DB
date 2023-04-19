@@ -3,13 +3,10 @@ import openmdao.api as om
 import config
 from openMDAO.DBoptimiser import OMOptimise
 from module.fileAPI import FileAPI
-from module.logger import logger
 
 
 def run_optimization():
     # initialize the logger and output file Builder.
-    log = logger
-
     counter = FileAPI(config.tempPath, 'optimization.csv').builder()
     counter.writeLine('g_p,g_c,T_L,T_l,t_a,T_N,K_r,K_t,heading_diff_mean,heading_diff_max')
 
@@ -42,8 +39,8 @@ def run_optimization():
 
     # Setting the optimisation algorithm to use, in this case a differential evolutionary algorithm
     prob.driver = om.DifferentialEvolutionDriver()
-    prob.driver.options['pop_size'] = 10
-    prob.driver.options['max_gen'] = 10
+    prob.driver.options['pop_size'] = config.pop_size
+    prob.driver.options['max_gen'] = config.max_gen
     prob.driver.options['F'] = 0.5
     prob.driver.options['Pc'] = 0.5
 
@@ -53,9 +50,7 @@ def run_optimization():
     # Returning variable outputs at the point optimiser completes and save in an output file
     counter.write()
 
-    f = FileAPI(config.tempPath, 'DB_parameters.dat')
+    f = FileAPI(config.tempPath, 'DB_parameters.dat').logger.info('Run optimization success.')
     if f.isExist():
         f.logger.info('Removing the old DB_parameters.dat file.')
         f.remove()
-
-    log.info('Run optimization success.')

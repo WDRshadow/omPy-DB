@@ -8,6 +8,8 @@ startTime = 0
 stopTime = 15
 outputVariable = 'heading_angle_difference'
 outputFileName = 'DB'
+pop_size = 10
+max_gen = 10
 # -------------------------------
 # Initial Conditions
 inputParameters = {

@@ -16,5 +16,4 @@ reports/
 *.h
 *.json
 *.xml
-*.csv
 *.out
