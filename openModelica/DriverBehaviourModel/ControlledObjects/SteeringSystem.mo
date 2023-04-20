@@ -1,4 +1,4 @@
-within DriverBehaviourModel.ComtrolledObjects;
+within DriverBehaviourModel.ControlledObjects;
 
 model SteeringSystem
   parameter Real J_s(unit="1")=0.11 "Moment inertia of steering system.";
@@ -13,13 +13,13 @@ model SteeringSystem
   Modelica.Blocks.Continuous.TransferFunction damping_moment_inertia_system_2(a = {1, 0})  annotation(
     Placement(visible = true, transformation(origin = {20, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   DriverBehaviourModel.Interfaces.AngleRealOutput steering_wheel_angle annotation(
-    Placement(visible = true, transformation(origin = {-90, 32}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-90, 32}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   DriverBehaviourModel.Interfaces.TorqueRealInput torque_input annotation(
-    Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-80, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-90, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   DriverBehaviourModel.Interfaces.TorqueRealInput aligning_torque annotation(
     Placement(visible = true, transformation(origin = {-60, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 90), iconTransformation(origin = {0, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
   DriverBehaviourModel.Interfaces.AngleRealOutput front_wheel_angle annotation(
-    Placement(visible = true, iconTransformation(origin = {90, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(extent = {{0, 0}, {0, 0}}, rotation = 0), iconTransformation(origin = {82, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(add_torque.y, damping_moment_inertia_system.u) annotation(
     Line(points = {{-28, 0}, {-22, 0}}, color = {0, 0, 127}));
@@ -39,5 +39,5 @@ equation
     uses(Modelica(version = "4.0.0")),
     Diagram(coordinateSystem(extent = {{-120, 40}, {100, -80}})),
     version = "",
-  Icon(graphics = {Text(origin = {0, 80}, lineColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name"), Ellipse(fillColor = {255, 0, 0}, fillPattern = FillPattern.Backward, extent = {{-40, 40}, {40, -40}}), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Line(origin = {-40, 45}, points = {{-40, 5}, {40, 5}, {40, -3}, {40, -5}, {40, -5}}, color = {255, 0, 0}, thickness = 0.5), Line(origin = {-50, 0.31}, points = {{-10, 0}, {10, 0}, {10, 0}}, thickness = 0.5), Line(origin = {60, 0}, points = {{-20, 0}, {20, 0}, {20, 0}}, color = {255, 0, 0}, thickness = 0.5), Line(origin = {0, -50}, points = {{0, 10}, {0, -10}, {0, -10}}, thickness = 0.5)}));
+  Icon(graphics = {Text(origin = {0, 80}, lineColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name", fontSize = 20), Rectangle(origin = {-70, 50}, fillColor = {144, 144, 144}, fillPattern = FillPattern.VerticalCylinder, extent = {{-30, 10}, {30, -10}}), Rectangle(origin = {-70, -50}, fillColor = {144, 144, 144}, fillPattern = FillPattern.VerticalCylinder, extent = {{-30, 10}, {30, -10}}), Rectangle(origin = {70, 50}, rotation = 15, fillColor = {144, 144, 144}, fillPattern = FillPattern.VerticalCylinder, extent = {{-30, 10}, {30, -10}}), Rectangle(origin = {70, -50}, rotation = 15, fillColor = {144, 144, 144}, fillPattern = FillPattern.VerticalCylinder, extent = {{-30, 10}, {30, -10}}), Line(origin = {-70, 0}, points = {{0, 40}, {0, -40}, {0, -40}}, thickness = 1), Line(origin = {72, 0}, points = {{0, 40}, {0, -40}, {0, -40}}, thickness = 1), Line(origin = {1, 0}, points = {{-71, 0}, {71, 0}, {71, 0}}, thickness = 1), Line(origin = {0, -30.5}, points = {{0, 30.5}, {0, -31.5}, {0, -29.5}}, pattern = LinePattern.Dash, thickness = 0.5)}));
 end SteeringSystem;

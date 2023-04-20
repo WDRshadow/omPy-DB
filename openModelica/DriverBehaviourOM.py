@@ -35,14 +35,10 @@ class OMModel:
         modelFile = modelName.pop() + '.mo'
         modelPath = os.path.join(self.path, '\\'.join(modelName))
         FileAPI(modelPath, modelFile).changer() \
-            .change(37, 3, updateData['K_r']) \
-            .change(37, 5, updateData['K_t']) \
-            .change(37, 7, updateData['T_L']) \
-            .change(37, 9, updateData['T_N']) \
-            .change(37, 11, updateData['T_l']) \
-            .change(37, 13, updateData['g_c']) \
-            .change(37, 15, updateData['g_p']) \
-            .change(37, 17, updateData['t_a']) \
+            .change(15, 3, updateData['K_r']) \
+            .change(15, 5, updateData['K_t']) \
+            .change(15, 7, updateData['g_c']) \
+            .change(15, 9, updateData['g_p']) \
             .do()
         # self.mod.setParameters(['parameters.g_p={}'.format(updateData['g_p']),
         #                         'parameters.g_c={}'.format(updateData['g_c']),

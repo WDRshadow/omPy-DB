@@ -1,4 +1,4 @@
-within DriverBehaviourModel.ComtrolledObjects;
+within DriverBehaviourModel.BasicData;
 
 record Parameters
   import Modelica.Units.SI;
